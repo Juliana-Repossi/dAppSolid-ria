@@ -14,7 +14,7 @@ function errorLogin(input,msg){
     small.innerText = msg;
 
     //add classe de error
-    form.className = "form-control-senha error"
+    form.className = "coluna-100-senha error"
 
 }
 
@@ -58,7 +58,7 @@ function VerificaCadastroUsuário(entradaNome,entradaSenha,) {
     return;
 }
 
-const LogarUsuario = () => {
+function LogarUsuario() {
     //pegar os dados recebidos
 
     //nome 

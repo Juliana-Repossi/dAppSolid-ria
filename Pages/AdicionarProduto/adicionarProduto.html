@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <!-- Importing css styles -->
+    <link rel="stylesheet" href="./adicionarProduto.css" />
+    <title>Cadastrar item</title>
+  </head>
+  <body  background="../../Imagens/Imagem.png">
+    <section class="cadastro-item">
+
+        <div class='form-control'>
+
+            <h1><strong>Cadastro de item</strong></h1>
+            
+              <p>Você pode cadastrar um produto para venda ou doação, um serviço ou um aluguel.</p>
+            
+              <div class="form-control-name">
+                <label>Nome do item: </label>
+                <br />
+                <input 
+                  type="text"
+                  id="nome"         
+                />
+                <br />
+              </div>        
+              
+              <div>
+                <label>Descrição do item:</label>
+                <br />
+                <input 
+                  type="text"
+                  id="descricao"         
+                />
+              </div>
+
+              <div>
+                <label>Tipo de anúncio</label>
+                <br />
+                <select class="form-select" id="anuncio" onChange="atualizaSelectAnuncio()">
+                    <option>Escolha a modalidade do anuncio</option>
+                    <option value=venda>Venda</option>
+                    <option value=doacao>Doação</option>
+                    <option value=servico>Serviço</option>
+                    <option value=aluguel>Aluguel</option>
+                </select>
+              </div>
+              
+              <div class = "form-control-valor">
+                <label>Valor do item:</label>
+                <br />
+                <input  
+                  type="text" 
+                  id="valor"
+                  placeholder="Em moedas $oli"
+                />
+                <br/>
+                <small>Como precificar em $oli?</small>
+              </div>
+
+              <button id="cadastrar-item">Cadastrar</button>
+              </div>        
+    </section> 
+  
+   
+    <script
+    src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"
+    type="application/javascript"
+    ></script>
+
+    <!-- Importing our javascript file -->
+    <script src="./adicionarProduto.js"></script>
+  </body>
+</html>

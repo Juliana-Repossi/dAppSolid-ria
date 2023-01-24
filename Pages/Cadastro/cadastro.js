@@ -43,7 +43,7 @@ function addUsuario(novoUsuario,nomeInput){
 const botaoCadastrar = document.querySelector("#cadastrar-usuario");
 
 
-const CadastrarUsuario = () => {
+function CadastrarUsuario(){
     //pegando os dados digitados
     //abstração: como é um projeto de curto prazo
     //verificações importantes como validar cpf e verificar se vazio não foram feitas
