@@ -1,4 +1,3 @@
-
 //lista de usuarios cadastrados
 var usuarios = [];
 
@@ -23,9 +22,6 @@ function VerificaCadastroUsuário(entradaNome,entradaSenha,) {
     const nome = entradaNome.value;
     const senha = entradaSenha.value;
 
-    console.log(nome);
-    console.log(senha);
-
     //receber lista de usuarios do localstorage
     if(localStorage.listaUsuarios)
     {
@@ -38,6 +34,8 @@ function VerificaCadastroUsuário(entradaNome,entradaSenha,) {
         {
             //verifica senha
             if(usuarios[i].senha == senha){
+                //guardar o nome do usuário logado
+                localStorage.setItem("usuario",nome);
                 //liberar acesso
                 window.location.href = "Pages/Home/home.html"
                 return;
@@ -67,7 +65,7 @@ function LogarUsuario() {
     const senhaInput = document.querySelector("#senha");
 
     VerificaCadastroUsuário(nomeInput,senhaInput);
-
 }
 
 botaoEntrar.addEventListener("click",LogarUsuario);
+
