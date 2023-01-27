@@ -28,10 +28,32 @@
       </header>
 
       <div class="produtos">
-        <h1>Produtos disponíveis</h1>
+        <h1><strong>Produtos disponíveis</strong></h1>
         
         <div class="fab">          
           <a href="../AdicionarProduto/adicionarProduto.html"> <button>+</button> </a> 
+        </div>
+
+        <table id="minhaTabela" class="table table-hover table-bordered table-striped ">
+          <thead>
+            <th>Id</th>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Tipo</th>
+            <th>Preço($oli)</th>
+          </thead>
+          <tbody id="tabela">
+          </tbody>
+        </table>
+
+        <div class = "solicitacao" >
+          <label>Digite o numero do item:  </label>
+          <br />
+          <input 
+            type="text"
+            id="itemSelecionado"         
+          />
+          <button id="solicitar">Solicitar Item</button>
         </div>
         
       </div>

@@ -2,7 +2,7 @@
 let SoliContract;
 
 // 2. Set contract address and ABI
-const Soli_Contract_Address = "0x7355dB552c3cf16237BDe519017EE8883327fA1C";
+const Soli_Contract_Address = "0xbf8E7Db506af535b43e354A6C7AED1E644E0C61C";
 const Soli_Contract_ABI = [
 	{
 		"inputs": [],
@@ -35,55 +35,6 @@ const Soli_Contract_ABI = [
 		"type": "event"
 	},
 	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "value",
-				"type": "uint256"
-			}
-		],
-		"name": "Transfer",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "owner",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "spender",
-				"type": "address"
-			}
-		],
-		"name": "allowance",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"inputs": [
 			{
 				"internalType": "address",
@@ -108,35 +59,35 @@ const Soli_Contract_ABI = [
 		"type": "function"
 	},
 	{
+		"anonymous": false,
 		"inputs": [
 			{
+				"indexed": false,
 				"internalType": "address",
-				"name": "account",
+				"name": "receptor",
 				"type": "address"
-			}
-		],
-		"name": "balanceOf",
-		"outputs": [
+			},
 			{
+				"indexed": false,
 				"internalType": "uint256",
-				"name": "",
+				"name": "valor",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "saldoAtual",
 				"type": "uint256"
 			}
 		],
-		"stateMutability": "view",
-		"type": "function"
+		"name": "Bonificacao",
+		"type": "event"
 	},
 	{
 		"inputs": [],
-		"name": "decimals",
-		"outputs": [
-			{
-				"internalType": "uint8",
-				"name": "",
-				"type": "uint8"
-			}
-		],
-		"stateMutability": "view",
+		"name": "criaItemAluguel",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -188,49 +139,16 @@ const Soli_Contract_ABI = [
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "name",
-		"outputs": [
+		"inputs": [
 			{
 				"internalType": "string",
-				"name": "",
+				"name": "codinome",
 				"type": "string"
 			}
 		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
 		"name": "recompensaCadastro",
 		"outputs": [],
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "symbol",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "totalSupply",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -256,6 +174,31 @@ const Soli_Contract_ABI = [
 		],
 		"stateMutability": "nonpayable",
 		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "Transfer",
+		"type": "event"
 	},
 	{
 		"inputs": [
@@ -284,6 +227,101 @@ const Soli_Contract_ABI = [
 			}
 		],
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			}
+		],
+		"name": "allowance",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "account",
+				"type": "address"
+			}
+		],
+		"name": "balanceOf",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "decimals",
+		"outputs": [
+			{
+				"internalType": "uint8",
+				"name": "",
+				"type": "uint8"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "name",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "symbol",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "totalSupply",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -322,23 +360,53 @@ provider.send("eth_requestAccounts", []).then(() => {
   });
 });
 
-window. onload = function ()
-{ 
-    alert("Está carregado!");
-    
-    //carregar saldo na tela
-    SoliContract.recompensaCadastro().then(() => {
+itens = [];
 
-        alert("Obrigada por se cadastrar! Você ganhou 1000 $oli para começar bem nossa conexão solidaria C;" )
+window.onload = function listaTabela() {
+    let tabela = document.getElementById("tabela");
+
+    //adicionar produto na lista
+    if (localStorage.listaItens)
+    {
+        itens = JSON.parse(localStorage.getItem("listaItens"));
+    }
+
+    for(let i=0; i<itens.length;i++){
+        //criar cada linha
+        let tr = tabela.insertRow();
+
+        let td_id = tr.insertCell();
+        let td_nome = tr.insertCell();
+        let td_descricao = tr.insertCell();
+        let td_tipo = tr.insertCell();
+        let td_preco = tr.insertCell();
+
+        console.log( itens[i].nome);
+
+        td_id.innerText = i+1;
+        td_nome.innerText = itens[i].nome;
+        td_descricao.innerText = itens[i].descricao;
+        td_tipo.innerText = itens[i].tipo;
+        td_preco.innerText = itens[i].preco;
+
+    }
+};
+
+const botaoSolicitar = document.querySelector("#solicitar");
+
+const SolicitaItem = () => {
     
-        //guardar o nome do usuário logado
-        localStorage.setItem("usuario",nomeInput.value);
-    
-        //direciona para a pag home
-        window.location.href = "../Home/home.html"
-    })
-    .catch((err) => {
-    // If error occurs, display error message
-        alert("Erro ao cadastrar usuário");
-    }); */
+    const itemEscolhido = document.querySelector("#itemSelecionado");
+    const nItem = itemEscolhido.value;
+    //ver se esta no intervalo
+    if(nItem > 0 && nItem <= itens.length){
+        //Envia para blockchain e cria um contrato
+        alert("OK");
+    }
+    else
+    {
+        alert("Not ok");
+    }
 }
+
+botaoSolicitar.addEventListener("click",SolicitaItem);

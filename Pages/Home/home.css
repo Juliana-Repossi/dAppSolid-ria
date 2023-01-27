@@ -7,8 +7,6 @@
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 30px;
 }
-
-
   
 .fab{
     position: fixed;
@@ -31,5 +29,58 @@
     -moz-transition: .2s ease-out;
     transition: .2s ease-out;
 }
+
+.produtos h1 {
+    margin: 24px 24px 24px;
+    font-size: 40px;
+    color: #d9aa01 ;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.produtos table {
+    margin: 10px;
+    font-size: 20px;
+    color: #303030 ;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    border-color:d9aa01 ;
+}
   
+.solicitacao label{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 17px;
+    color: #765c00 ;
+    font-style: italic;
+    margin: 10px;
+}
+    
+.solicitacao input{
+    background-color: #f6ea7dbf;
+    border-radius: 20px;
+    border: none;
+    height: 35px;
+    margin: 0 0 10px;
+    color: #765c00;   
+    margin-bottom: 25px; 
+    align-items: center;
+    margin: 10px;  
+}
+
+.solicitacao button{
   
+    width: 30%;
+    padding: 15px;
+    font-weight: 500;
+    background: #ecbc0f ;
+    color:#ffffff;
+    border-radius: 25px;
+    margin: 2px 20% 2px;
+    border: none;
+    cursor: pointer;
+    transition: filter 0.7s;
+    font-size: 20px;
+
+}
+    
+.solicitacao button:hover{
+    filter: brightness(0.9);
+}

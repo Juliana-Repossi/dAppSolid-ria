@@ -1,6 +1,4 @@
-
-
-
+var itens = [];
 
 const botaoCadastrar = document.querySelector("#cadastrar-item");
 
@@ -42,19 +40,26 @@ function cadastrarItem(){
        return;
     }
     
-    const item = {
+    const novoItem = {
         nome: inputName.value,
         descricao : inputDescricao.value,
         tipo : inputTipoAnuncio,
-        preco: inputPreco.value
+        preco: inputPreco.value,
+        dono: localStorage.getItem("usuario")
     }
 
-    // criar um contrato daquele produto
-    console.log(item);
+    //adicionar produto na lista
+    if (localStorage.listaItens)
+    {
+        itens = JSON.parse(localStorage.getItem("listaItens"));
+    }
 
+    //salvar novo item
+    itens.push(novoItem);
+    localStorage.listaItens = JSON.stringify(itens);
 
+    //direciona para a pag home
+    window.location.href = "../Home/home.html"
 }
-
-
 
 botaoCadastrar.addEventListener("click",cadastrarItem);
