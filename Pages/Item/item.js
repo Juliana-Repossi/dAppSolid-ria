@@ -373,78 +373,99 @@ provider.send("eth_requestAccounts", []).then(() => {
 
 var itens = [];
 
-const botaoCadastrar = document.querySelector("#cadastrar-item");
-
-//função para captar a opcao escolhida no select
-function atualizaSelectAnuncio(){
-    let select = document.querySelector("#anuncio");
-    let opcaoValue = select.options[select.selectedIndex];
-    let value = opcaoValue.value;
-
-    return value;
-}
-
-//erro de precificação: doação com valor de venda
-function errorPrecificacao(input,msg){
-    //pegar o formulário
-    const form = input.parentElement;
-    const small = form.querySelector('small');
- 
-    //add msg de error
-    small.innerText = msg;
- 
-    //add classe de erro
-    form.className = "form-control-valor error";
-
-}
-
-const cadastrarItem = () => {
-
-    //pegar os valores das entradas
-    const inputName = document.querySelector("#nome");
-    const inputDescricao = document.querySelector("#descricao");
-    const inputTipoAnuncio = atualizaSelectAnuncio();
-    const inputPreco = document.querySelector("#valor");
-        
-    if(inputTipoAnuncio == "doacao" && inputPreco.value != 0)
+function recuperarItemSelecionado()
+{
+    if (localStorage.item)
     {
-       errorPrecificacao(inputPreco,"Uma doação não pode ter um valor diferente de 0 !");
-       inputPreco.value = 0;
-       return;
-    }
-    
-    const novoItem = {
-        nome: inputName.value,
-        descricao : inputDescricao.value,
-        tipo : inputTipoAnuncio,
-        preco: inputPreco.value,
-        dono: localStorage.getItem("usuario")
+        nItem = JSON.parse(localStorage.getItem("item"));
     }
 
-    //adicionar produto na lista
     if (localStorage.listaItens)
     {
         itens = JSON.parse(localStorage.getItem("listaItens"));
     }
 
-    //salvar novo item
-    itens.push(novoItem);
-    localStorage.listaItens = JSON.stringify(itens);
-
-    //recompensar oferta de itens em $oli
-    SoliContract.recompensaOfertaItem(localStorage.getItem("usuario")).then(() => {
-
-        alert("Obrigada por cadastrar um item! Você ganhou 10 $oli por colaborar !" )
-
-       //direciona para a pag home
-        window.location.href = "../Home/home.html"
-    })
-    .catch((err) => {
-    // If error occurs, display error message
-        alert("Erro ao cadastrar item");
-    });  
-
-    
+    return itens[nItem];
 }
 
-botaoCadastrar.addEventListener("click",cadastrarItem);
+window.onload = function listaTabela() {
+
+    let tabela = document.getElementById("tabela");
+
+    let tr = tabela.insertRow();
+
+    let td_nome = tr.insertCell();
+    let td_descricao = tr.insertCell();
+    let td_tipo = tr.insertCell();
+    let td_preco = tr.insertCell();
+
+    itemEscolhido = recuperarItemSelecionado();
+
+    td_nome.innerText = itemEscolhido.nome;
+    td_descricao.innerText = itemEscolhido.descricao;
+    td_tipo.innerText = itemEscolhido.tipo;
+    td_preco.innerText = itemEscolhido.preco;
+
+};
+
+const botaoSaldo = document.querySelector("#VerSaldo");
+
+const exibeSaldo = () => {
+
+	//usuario logado
+	usr = localStorage.getItem("usuario");
+
+    SoliContract.SaldoLivreCodinome(usr).then((res) => {
+		
+		let saldoAtual = document.getElementById("ExibeSaldo");
+		
+		saldoAtual.innerText = res;
+	})
+	.catch((err) => {
+	// If error occurs, display error message
+		alert("Erro ao cadastrar usuário");
+	});        
+} 
+
+
+botaoSaldo.addEventListener("click", exibeSaldo);
+
+const botaoSolicitar = document.querySelector("#solicitar");
+
+let pendentes = [];
+
+const solicitaItem = () => {
+
+	//usuario logado
+	comprador = localStorage.getItem("usuario");
+	//item solicitado
+	item = recuperarItemSelecionado();
+
+	const itemSolicitado = {
+		comprador: comprador,
+		vendedor: item.dono,
+		nome: item.nome,
+		preco: item.preco
+	}
+
+    SoliContract.criaCompra(comprador,item.dono,item.nome,item.preco).then(() => {
+		
+		alert("Solicitação de compra feita com sucesso! Aguarde a aprovação.");
+		if (localStorage.solicitacoesPendentes)
+		{
+			pendentes = JSON.parse(localStorage.getItem("solicitacoesPendentes"));
+		}
+		pendentes.push(itemSolicitado);
+		localStorage.solicitacoesPendentes = JSON.stringify(pendentes);
+
+		//direciona para a pag perfim
+        window.location.href = "../Perfil/perfil.html"
+	})
+	.catch((err) => {
+	// If error occurs, display error message
+		alert(err);
+	});      
+} 
+
+
+botaoSolicitar.addEventListener("click", solicitaItem);

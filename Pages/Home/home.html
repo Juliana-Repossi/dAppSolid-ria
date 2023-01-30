@@ -20,6 +20,8 @@
               <img src="../../Imagens/moeda.png" alt="Logo" width="35" height="35" class="d-inline-block align-text-top">
               <strong> Conexão Solidária</strong>
             </a>
+            <button id="VerSaldo">Atualiza saldo</button>
+            <h2 id="ExibeSaldo"> </h2>
             <a class="navbar-brand" href="../Perfil/perfil.html">
               <img src="../../Imagens/perfil.webp" alt="Logo" width="35" height="35" class="d-inline-block align-text-top">
             </a>
@@ -34,7 +36,7 @@
           <a href="../AdicionarProduto/adicionarProduto.html"> <button>+</button> </a> 
         </div>
 
-        <table id="minhaTabela" class="table table-hover table-bordered table-striped ">
+        <table class="table table-hover table-bordered table-striped ">
           <thead>
             <th>Id</th>
             <th>Nome</th>
@@ -47,12 +49,8 @@
         </table>
 
         <div class = "solicitacao" >
-          <label>Digite o numero do item:  </label>
-          <br />
-          <input 
-            type="text"
-            id="itemSelecionado"         
-          />
+          <label><strong>Digite o numero do item:</strong> </label>
+          <input type="text" id="itemSelecionado"/>
           <button id="solicitar">Solicitar Item</button>
         </div>
         

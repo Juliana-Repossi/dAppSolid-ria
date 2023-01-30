@@ -7,3 +7,28 @@
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 30px;
 }
+
+.perfil h2{
+    font-size: 25px;
+    color: #ffffff ;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.perfil button{
+
+    height: 40px;
+    font-weight: 500;
+    background: #ecbc0f ;
+    color:#ffffff;
+    border-radius: 25px;
+    border-color: #ffffff;
+    cursor: pointer;
+    transition: filter 0.7s;
+    font-size: 20px;
+    align-items: flex-end;
+    margin: 0 0 0 45%;
+}
+    
+.perfil button:hover{
+    filter: brightness(0.9);
+}
