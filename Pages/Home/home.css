@@ -12,6 +12,7 @@
     font-size: 25px;
     color: #ffffff ;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 0 0 0 60%;
 }
 
 .homePage button{
@@ -58,7 +59,7 @@
 
 .produtos h1 {
     margin: 24px 24px 24px;
-    font-size: 40px;
+    font-size: 38px;
     color: #d9aa01 ;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
