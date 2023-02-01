@@ -1,94 +1,9 @@
-// 1. Declare global variable to store the smart contract instance
+// instancia do contrato
 let SoliContract;
 
-// 2. Set contract address and ABI
-const Soli_Contract_Address = "0xa698722a18b46f6999ac6bd682c584022b3c6ab5";
+// endereço do contrato e ABI para instanciar o contrato
+const Soli_Contract_Address = "0x7267Ff37a2fbf5E9884c48ED121F9CA38Fe2f420";
 const Soli_Contract_ABI = [
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "comprador",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "vendedor",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "item",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "valor",
-				"type": "uint256"
-			}
-		],
-		"name": "compradorCancelaCompra",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "comprador",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "vendedor",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "valor",
-				"type": "uint256"
-			}
-		],
-		"name": "compradorRecebeCompra",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "comprador",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "vendedor",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "item",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "valor",
-				"type": "uint256"
-			}
-		],
-		"name": "criaCompra",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
 	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
@@ -120,6 +35,12 @@ const Soli_Contract_ABI = [
 				"internalType": "string",
 				"name": "comprador",
 				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "bool",
+				"name": "situacao",
+				"type": "bool"
 			}
 		],
 		"name": "notificaVenda",
@@ -176,36 +97,16 @@ const Soli_Contract_ABI = [
 				"internalType": "string",
 				"name": "item",
 				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "preco",
+				"type": "uint256"
 			}
 		],
 		"name": "pedidoEnviado",
 		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "codinome",
-				"type": "string"
-			}
-		],
-		"name": "recompensaCadastro",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "codinome",
-				"type": "string"
-			}
-		],
-		"name": "recompensaOfertaItem",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
 	},
 	{
 		"anonymous": false,
@@ -213,7 +114,38 @@ const Soli_Contract_ABI = [
 			{
 				"indexed": false,
 				"internalType": "string",
+				"name": "proprietario",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "saldo",
+				"type": "uint256"
+			}
+		],
+		"name": "saldoAlterado",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "comprador",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
 				"name": "vendedor",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "item",
 				"type": "string"
 			},
 			{
@@ -225,6 +157,25 @@ const Soli_Contract_ABI = [
 		],
 		"name": "valorLiberadoVendedor",
 		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "codinome",
+				"type": "string"
+			}
+		],
+		"name": "SaldoLivreCodinome",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
 	},
 	{
 		"inputs": [
@@ -242,9 +193,42 @@ const Soli_Contract_ABI = [
 				"internalType": "string",
 				"name": "item",
 				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "valor",
+				"type": "uint256"
 			}
 		],
-		"name": "vendedorEnviaCompra",
+		"name": "compradorCancelaCompra",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "comprador",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "vendedor",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "item",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "preco",
+				"type": "uint256"
+			}
+		],
+		"name": "compradorRecebeCompra",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -277,6 +261,60 @@ const Soli_Contract_ABI = [
 		"inputs": [
 			{
 				"internalType": "string",
+				"name": "comprador",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "vendedor",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "item",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "valor",
+				"type": "uint256"
+			}
+		],
+		"name": "criaCompra",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "codinome",
+				"type": "string"
+			}
+		],
+		"name": "recompensaCadastro",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "codinome",
+				"type": "string"
+			}
+		],
+		"name": "recompensaOfertaItem",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
 				"name": "",
 				"type": "string"
 			},
@@ -287,44 +325,6 @@ const Soli_Contract_ABI = [
 			}
 		],
 		"name": "saldo",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "codinome",
-				"type": "string"
-			}
-		],
-		"name": "SaldoBlockCodinome",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "codinome",
-				"type": "string"
-			}
-		],
-		"name": "SaldoLivreCodinome",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -353,6 +353,34 @@ const Soli_Contract_ABI = [
 		],
 		"stateMutability": "view",
 		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "comprador",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "vendedor",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "item",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "preco",
+				"type": "uint256"
+			}
+		],
+		"name": "vendedorEnviaCompra",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
 	}
 ]
 
@@ -375,7 +403,6 @@ var usuarios = [];
 
 //botao de cadastrar
 const botaoCadastrar = document.querySelector("#cadastrar-usuario");
-
 
 function errorCadastro(input,msg){
     //pegar o formulário
@@ -450,8 +477,7 @@ const CadastrarUsuario = () => {
             window.location.href = "../Home/home.html"
         })
         .catch((err) => {
-        // If error occurs, display error message
-            alert("Erro ao cadastrar usuário");
+            alert("Erro ao cadastrar usuário" + err);
         });        
     } 
 }
