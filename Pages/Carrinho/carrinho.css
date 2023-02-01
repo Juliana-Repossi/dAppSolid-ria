@@ -1,0 +1,50 @@
+.navbar{
+    background-color:#ecbc0f;
+}
+
+.navbar-brand{
+    color: #ffffff;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 30px;
+}
+
+.itemPage h2{
+    font-size: 25px;
+    color: #ffffff ;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 0 0 0 60%;
+}
+
+.compra h1 {
+    margin: 24px 24px 24px;
+    font-size: 35px;
+    color: #d9aa01 ;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.compra table {
+    margin: 10px;
+    font-size: 20px;
+    color: #303030 ;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    border-color:#37352e70 ;
+}
+
+.compra button{
+
+    height: 40px;
+    font-weight: 500;
+    background: #ecbc0f ;
+    color:#ffffff;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    transition: filter 0.7s;
+    font-size: 20px;
+    margin: 2%;
+
+}
+    
+.compra button:hover{
+    filter: brightness(0.9);
+}
