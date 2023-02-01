@@ -15,7 +15,7 @@ contract Compra{
         valor = _valor;
         vendedor = _vendedor;
         comprador = _comprador;
-        situacao = "Aguardando entrega";
+        situacao = "Aguardando envio";
         fabrica = msg.sender;
     }
 

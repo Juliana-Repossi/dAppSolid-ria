@@ -16,37 +16,35 @@ contract SoliFactory {
     //Mapeamento de codinome -> tipo de saldo -> saldo em $oli
     mapping (string => mapping(string => uint)) public saldo;
 
-
     constructor(){
         owner = msg.sender;
     }
+
+    event saldoAlterado(string proprietario,uint saldo);
 
     //oferta inicial de Soli para quem se cadastrar
     function recompensaCadastro(string memory codinome) public
     {
         //insere no mapeamento
         usuarios[codinome] = msg.sender;
-        //insere no mapeamento
+        //inicializa saldos - com ofera inicial
         saldo[codinome][saldoLivre] = 1000 ; 
         saldo[codinome][saldoBlock] = 0 ; 
+
+        emit saldoAlterado(codinome,SaldoLivreCodinome(codinome));
     }
 
     //recompensa por cadastrar um produto
     function recompensaOfertaItem(string memory codinome) public
     {
-        saldo[codinome][saldoLivre] = saldo[codinome][saldoLivre] + 10 ;
+        saldo[codinome][saldoLivre] = saldo[codinome][saldoLivre] + 10;
+        emit saldoAlterado(codinome,SaldoLivreCodinome(codinome));
     }
 
     // balanco a partir do codinome
     function SaldoLivreCodinome(string memory codinome) public view returns (uint)
     {
         return saldo[codinome][saldoLivre];
-    }
-
-    // balanco a partir do codinome
-    function SaldoBlockCodinome(string memory codinome) public view returns (uint)
-    {
-        return saldo[codinome][saldoBlock];
     }
 
     //Fábrica de contratos
@@ -56,8 +54,8 @@ contract SoliFactory {
     //vendedor - comprador - compra
     mapping(string => mapping(string => Compra)) public compras;
     
-    //transacao de compra e venda feita com sucesso 
-    event notificaVenda(string indexed vendedor, string item, uint valor, string comprador);
+    //transacao de compra e venda
+    event notificaVenda(string vendedor, string item, uint valor, string comprador, bool situacao);
 
     function criaCompra(string memory comprador, string memory vendedor, string memory item, uint valor) public{
         
@@ -70,33 +68,43 @@ contract SoliFactory {
             
             compras[vendedor][comprador] = new Compra(item,valor,usuarios[vendedor],usuarios[comprador]);
             //notifica vendedor
-            emit notificaVenda(vendedor, item, valor,comprador);
-        }  
+            emit notificaVenda(vendedor, item, valor,comprador,true);
+            emit saldoAlterado(comprador,SaldoLivreCodinome(comprador));
+        } 
+        //compra não efetuada por falta de saldo
+        emit notificaVenda(vendedor, item, valor,comprador,false); 
     } 
 
     //evento de pedido enviado pelo vendedor
-    event pedidoEnviado(string vendedor, string indexed comprador, string item);
+    event pedidoEnviado(string vendedor, string comprador, string item, uint preco);
 
-    function vendedorEnviaCompra(string memory comprador, string memory vendedor, string memory item) public {
+    function vendedorEnviaCompra(string memory comprador, string memory vendedor, string memory item, uint preco) public {
         Compra(compras[vendedor][comprador]).enviaCompra(msg.sender);
-        emit pedidoEnviado(vendedor,comprador,item);
+        saldo[vendedor][saldoLivre] = saldo[vendedor][saldoLivre] + 30;
+        emit pedidoEnviado(vendedor,comprador,item,preco);
+        emit saldoAlterado(vendedor,SaldoLivreCodinome(vendedor));
     }
 
     //valor de venda liberado
-    event valorLiberadoVendedor(string indexed vendedor, uint valor);
+    event valorLiberadoVendedor(string comprador, string vendedor, string item,uint valor);
 
-    function compradorRecebeCompra(string memory comprador, string memory vendedor, uint valor) public {
+    function compradorRecebeCompra(string memory comprador, string memory vendedor,string memory item, uint preco) public {
         Compra(compras[vendedor][comprador]).recebeCompra(msg.sender);
 
         // vendedor recebe o pagamento do saldo bloqueado do comprador;
-        saldo[comprador][saldoBlock] = saldo[comprador][saldoBlock] - valor;
-        saldo[vendedor][saldoLivre] = saldo[vendedor][saldoLivre] + valor;
+        saldo[comprador][saldoBlock] = saldo[comprador][saldoBlock] - preco;
+        saldo[vendedor][saldoLivre] = saldo[vendedor][saldoLivre] + preco;
+        //recompensa comprador por confirmar entrega
+        saldo[comprador][saldoLivre] = saldo[comprador][saldoLivre] + 30;
+
         
-        emit valorLiberadoVendedor(vendedor,valor);
+        emit valorLiberadoVendedor(comprador,vendedor,item,preco);
+        emit saldoAlterado(vendedor,SaldoLivreCodinome(vendedor));
+        emit saldoAlterado(comprador,SaldoLivreCodinome(comprador));
     } 
 
     //evento de cancelamento de pedido
-    event pedidoCancelado(string indexed vendedor, string comprador, string item, uint valor);
+    event pedidoCancelado(string vendedor, string comprador, string item, uint valor);
 
     function compradorCancelaCompra(string memory comprador, string memory vendedor, string memory item,uint valor) public {
         
@@ -109,4 +117,3 @@ contract SoliFactory {
         emit pedidoCancelado(vendedor,comprador,item,valor);
     }    
 }
-
