@@ -2,7 +2,7 @@
 let SoliContract;
 
 // endereço do contrato e ABI para instanciar o contrato nas páginas
-const Soli_Contract_Address = "0x8bbdB862AfB06F349D8ee0A9B8Ea9f5a7AA9D44b";
+const Soli_Contract_Address = "0xDB6F2793187C3cAF5a1c8dd04327bba87c4E06BB";
 const Soli_Contract_ABI = [
 	{
 		"inputs": [
@@ -81,6 +81,11 @@ const Soli_Contract_ABI = [
 				"internalType": "uint256",
 				"name": "valor",
 				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "idItem",
+				"type": "uint256"
 			}
 		],
 		"name": "criaCompra",
@@ -105,20 +110,14 @@ const Soli_Contract_ABI = [
 			{
 				"indexed": false,
 				"internalType": "string",
-				"name": "item",
+				"name": "comprador",
 				"type": "string"
 			},
 			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "valor",
+				"name": "idItem",
 				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "comprador",
-				"type": "string"
 			},
 			{
 				"indexed": false,
@@ -389,7 +388,6 @@ const usuarioLogado = localStorage.getItem("usuario");
 var itens = [];
 
 window.onload = async () => {
-
 	
 	/* 3. Prompt user to sign in to MetaMask */
 	const provider = new ethers.providers.Web3Provider(window.ethereum, "goerli");
@@ -405,10 +403,10 @@ window.onload = async () => {
 		);
 
 		//exibir o saldo do usuario logado
-		exibeSaldo(usuarioLogado);
+		exibeSaldo();
 
 		//eventos que podem ser ouvidos nessa pag
-		atualizaSaldo(usuarioLogado);
+		atualizaSaldo();
 	});
 	});
 
@@ -422,7 +420,7 @@ window.onload = async () => {
     let td_preco = tr.insertCell();
 	let td_vendedor = tr.insertCell();
 
-    var itemEscolhido = recuperarItemSelecionado();
+    const itemEscolhido = recuperarItemSelecionado();
 
     td_nome.innerText = itemEscolhido.nome;
     td_descricao.innerText = itemEscolhido.descricao;
@@ -432,7 +430,7 @@ window.onload = async () => {
 
 }
 
-window.exibeSaldo = (usuarioLogado) => {
+window.exibeSaldo = () => {
 	SoliContract.SaldoLivreCodinome(usuarioLogado).then((saldo) =>{
 		let meuSaldo = document.getElementById("ExibeSaldo");
 		meuSaldo.innerText = saldo;
@@ -442,7 +440,7 @@ window.exibeSaldo = (usuarioLogado) => {
 	})
 }
 
-window.atualizaSaldo = async (usuarioLogado) => {
+window.atualizaSaldo = async () => {
 	SoliContract.on("saldoAlterado",(codinome,saldo)=>{
 		//verifica se foi o seu saldo que mudou
 		if(usuarioLogado == codinome)
@@ -474,19 +472,12 @@ const solicitaItem = () => {
 
 	
 	//item solicitado
-	var item = recuperarItemSelecionado();
-
-	const itemSolicitado = {
-		comprador: usuarioLogado,
-		vendedor: item.vendedor,
-		nome: item.nome,
-		preco: item.preco
-	}
+	const item = recuperarItemSelecionado();
 
 	//Somente a modalidade de compra/venda efetuada
 	if(item.tipo == "venda")
 	{
-		SoliContract.criaCompra(usuarioLogado,item.vendedor,item.nome,item.preco).then(() => {
+		SoliContract.criaCompra(usuarioLogado,item.vendedor,item.nome,item.preco,item.id).then(() => {
 		
 			alert("Solicitação de compra feita com sucesso! Aguarde a aprovação.");
 	

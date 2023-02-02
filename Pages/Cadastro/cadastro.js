@@ -2,8 +2,8 @@
 let SoliContract;
 
 // endereço do contrato e ABI para instanciar o contrato
-const Soli_Contract_Address = "0x8bbdB862AfB06F349D8ee0A9B8Ea9f5a7AA9D44b";
-const Soli_Contract_ABI = [
+const Soli_Contract_Address = "0xDB6F2793187C3cAF5a1c8dd04327bba87c4E06BB";
+const Soli_Contract_ABI =  [
 	{
 		"inputs": [
 			{
@@ -81,6 +81,11 @@ const Soli_Contract_ABI = [
 				"internalType": "uint256",
 				"name": "valor",
 				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "idItem",
+				"type": "uint256"
 			}
 		],
 		"name": "criaCompra",
@@ -105,20 +110,14 @@ const Soli_Contract_ABI = [
 			{
 				"indexed": false,
 				"internalType": "string",
-				"name": "item",
+				"name": "comprador",
 				"type": "string"
 			},
 			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "valor",
+				"name": "idItem",
 				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "comprador",
-				"type": "string"
 			},
 			{
 				"indexed": false,

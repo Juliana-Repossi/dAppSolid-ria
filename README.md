@@ -14,7 +14,7 @@ Como esse projeto desenvolvido por um curto periodo de tempo - entre duas e trê
 - Limitação da modalidade de compra: apenas uma compra entre o par (comprador,vendedor) é realizada por vez;
 - Devido a problemas com o import e export do js dados de ABI e endereço do contrato estão duplicados em todas as páginas js necessárias;
 - Caberia mais funcionalidades e integrações, mas o projeto desenvolvido até então é um MVP. E validações triviais como de CPF, ou criptografia de senhas, não foram implementadas a fim de garantir foco no proposto pelo trabalho final da disciplina.
-
+- Como foi feito com localStorage alguns ajustes e limitações foram aplicadas na captura de eventos
 
 
 Para executar basta usar a extensao 'liveServer' o arquivo index.html e possuir uma conta no MetaMask na rede de teste Goerli.

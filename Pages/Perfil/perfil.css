@@ -15,7 +15,6 @@
     margin: 0 0 0 60%;
 }
 
-
 .perfilBody h1{
     font-size: 25px;
     color: #d8aa03 ;
@@ -54,6 +53,10 @@
     color: #765c00;   
     align-items: center;
     width: 100px;
+}
+
+.perfilBody input::placeholder{
+    color:#765c00;
 }
 
 .perfilBody button{

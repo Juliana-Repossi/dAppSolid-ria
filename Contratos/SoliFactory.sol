@@ -55,9 +55,9 @@ contract SoliFactory {
     mapping(string => mapping(string => Compra)) public compras;
     
     //transacao de compra e venda
-    event notificaVenda(string vendedor, string item, uint valor, string comprador, bool situacao);
+    event notificaVenda(string vendedor, string comprador, uint idItem, bool situacao);
 
-    function criaCompra(string memory comprador, string memory vendedor, string memory item, uint valor) public{
+    function criaCompra(string memory comprador, string memory vendedor, string memory item, uint valor, uint idItem) public{
         
         //pode fazer a compra
         if(SaldoLivreCodinome(comprador) >= valor)
@@ -68,11 +68,14 @@ contract SoliFactory {
             
             compras[vendedor][comprador] = new Compra(item,valor,usuarios[vendedor],usuarios[comprador]);
             //notifica vendedor
-            emit notificaVenda(vendedor, item, valor,comprador,true);
+            emit notificaVenda(vendedor,comprador,idItem,true);
             emit saldoAlterado(comprador,SaldoLivreCodinome(comprador));
         } 
-        //compra não efetuada por falta de saldo
-        emit notificaVenda(vendedor, item, valor,comprador,false); 
+        else
+        {
+            //compra não efetuada por falta de saldo
+            emit notificaVenda(vendedor,comprador,idItem,false); 
+        }
     } 
 
     //evento de pedido enviado pelo vendedor
@@ -115,5 +118,7 @@ contract SoliFactory {
         saldo[comprador][saldoLivre] = saldo[comprador][saldoLivre] + valor;
 
         emit pedidoCancelado(vendedor,comprador,item,valor);
+        emit saldoAlterado(comprador,SaldoLivreCodinome(comprador));
     }    
 }
+

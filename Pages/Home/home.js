@@ -2,7 +2,7 @@
 let SoliContract;
 
 // endereço do contrato e ABI para instanciar o contrato
-const Soli_Contract_Address = "0x8bbdB862AfB06F349D8ee0A9B8Ea9f5a7AA9D44b";
+const Soli_Contract_Address = "0xDB6F2793187C3cAF5a1c8dd04327bba87c4E06BB";
 const Soli_Contract_ABI = [
 	{
 		"inputs": [
@@ -81,6 +81,11 @@ const Soli_Contract_ABI = [
 				"internalType": "uint256",
 				"name": "valor",
 				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "idItem",
+				"type": "uint256"
 			}
 		],
 		"name": "criaCompra",
@@ -105,20 +110,14 @@ const Soli_Contract_ABI = [
 			{
 				"indexed": false,
 				"internalType": "string",
-				"name": "item",
+				"name": "comprador",
 				"type": "string"
 			},
 			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "valor",
+				"name": "idItem",
 				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "comprador",
-				"type": "string"
 			},
 			{
 				"indexed": false,
@@ -383,6 +382,7 @@ const Soli_Contract_ABI = [
 		"type": "function"
 	}
 ]
+
 const usuarioLogado = localStorage.getItem("usuario");
 
 var itens = [];
@@ -401,15 +401,15 @@ window.onload = async () => {
 			Soli_Contract_ABI,
 			signer
 		);
+	//exibir o saldo do usuario logado
+	exibeSaldo();
 
 	//eventos que podem ser ouvidos nessa pag
-	atualizaSaldo(usuarioLogado);
-
-	//exibir o saldo do usuario logado
-	exibeSaldo(usuarioLogado);
+	atualizaSaldo();	
 
 	});
 	});
+
 
 	let tabela = document.getElementById("tabela");
 
@@ -430,7 +430,7 @@ window.onload = async () => {
         let td_preco = tr.insertCell();
 		let td_vendedor = tr.insertCell();
 
-        td_id.innerText = i+1;
+        td_id.innerText = itens[i].id + 1;
         td_nome.innerText = itens[i].nome;
         td_descricao.innerText = itens[i].descricao;
         td_tipo.innerText = itens[i].tipo;
@@ -440,8 +440,7 @@ window.onload = async () => {
 
 }
 
-
-window.atualizaSaldo = async (usuarioLogado) => {
+window.atualizaSaldo = async () => {
 	SoliContract.on("saldoAlterado",(codinome,saldo)=>{
 		//verifica se foi o seu saldo que mudou
 		if(usuarioLogado == codinome)
@@ -452,7 +451,7 @@ window.atualizaSaldo = async (usuarioLogado) => {
 	})
 }
 
-window.exibeSaldo = (usuarioLogado) => {
+window.exibeSaldo = () => {
 	SoliContract.SaldoLivreCodinome(usuarioLogado).then((saldo) =>{
 		let meuSaldo = document.getElementById("ExibeSaldo");
 		meuSaldo.innerText = saldo;
@@ -461,7 +460,6 @@ window.exibeSaldo = (usuarioLogado) => {
 		alert(err);
 	})
 }
-
 
 const botaoSolicitar = document.querySelector("#solicitar");
 
@@ -472,7 +470,7 @@ const SolicitaItem = () => {
     //ver se esta no intervalo
     if(nItem > 0 && nItem <= itens.length)
 	{
-		localStorage.setItem("item",nItem-1); 
+		localStorage.setItem("item",nItem - 1); 
 
 		//direciona para a pag home
 		window.location.href = "../Carrinho/carrinho.html"

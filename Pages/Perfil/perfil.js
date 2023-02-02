@@ -2,7 +2,7 @@
 let SoliContract;
 
 // endereço do contrato e ABI para instanciar o contrato
-const Soli_Contract_Address = "0x8bbdB862AfB06F349D8ee0A9B8Ea9f5a7AA9D44b";
+const Soli_Contract_Address = "0xDB6F2793187C3cAF5a1c8dd04327bba87c4E06BB";
 const Soli_Contract_ABI = [
 	{
 		"inputs": [
@@ -81,6 +81,11 @@ const Soli_Contract_ABI = [
 				"internalType": "uint256",
 				"name": "valor",
 				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "idItem",
+				"type": "uint256"
 			}
 		],
 		"name": "criaCompra",
@@ -105,20 +110,14 @@ const Soli_Contract_ABI = [
 			{
 				"indexed": false,
 				"internalType": "string",
-				"name": "item",
+				"name": "comprador",
 				"type": "string"
 			},
 			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "valor",
+				"name": "idItem",
 				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "comprador",
-				"type": "string"
 			},
 			{
 				"indexed": false,
@@ -387,14 +386,18 @@ const Soli_Contract_ABI = [
 const usuarioLogado = localStorage.getItem("usuario");
 
  
-// itens para enviar -> localStorage respectivo : itensParaEnviarStorage
+// itens para enviar -> localStorage respectivo : itensParaEnviar+codinome
 var itensParaEnviar = [];
-// itens para receber pagamento -> localStorage respectivo : itensParaReceberValorStorage
+var itensParaEnviarNome = "itensParaEnviar" + usuarioLogado;
+// itens para receber pagamento -> localStorage respectivo : itensParaReceberValor+codinome
 var itensParaReceberValor = [];
-//compras realizadas aguardando envio -> localStorage respectivo : itensAguardandoEnvioStorage
+var itensParaReceberValorNome = "itensParaReceberValor" + usuarioLogado;
+//compras realizadas aguardando envio -> localStorage respectivo : itensAguardandoEnvio+codinome
 var itensAguardandoEnvio = [];
-//compras realizadas aguardando chegada-> localStorage respectivo : itensAguardandoChegadaStorage
+var itensAguardandoEnvioNome = "itensAguardandoEnvio" + usuarioLogado;
+//compras realizadas aguardando chegada-> localStorage respectivo : itensAguardandoChegada+codinome
 var itensAguardandoChegada = [];
+var itensAguardandoChegadaNome = "itensAguardandoChegada" + usuarioLogado;
 
 var itens = []; 
 
@@ -423,12 +426,13 @@ window.onload = async () => {
 	compraCanceladaPeloComprador();
 
 	//monta as tabelas
-	montaTabelas();
+	
 
 	atualizaSaldo();
 
 	});
 	});
+	montaTabelas();
 }
 
 window.montaTabelas = async () => {
@@ -436,10 +440,16 @@ window.montaTabelas = async () => {
 	let tabelaParaEnviar = document.getElementById("tabela-para-enviar");
 
     //adicionar produto na lista
-    if (localStorage.itensParaEnviarStorage)
+    if (localStorage.getItem(itensParaEnviarNome) != null)
     {
-        itensParaEnviar = JSON.parse(localStorage.getItem("itensParaEnviarStorage"));
+        itensParaEnviar = JSON.parse(localStorage.getItem(itensParaEnviarNome));
     }
+
+	//limpa dados antigos da tabela
+	while (tabelaParaEnviar.rows.length > 0)
+	{ 
+		tabelaParaEnviar.deleteRow(0); 
+	}
 
     for(let i=0; i<itensParaEnviar.length;i++){
         //criar cada linha
@@ -456,13 +466,20 @@ window.montaTabelas = async () => {
         td_preco.innerText = itensParaEnviar[i].preco;
     }
 
+
 	let tabelaParaReceberValor = document.getElementById("tabela-receber-valor");
 
     //adicionar produto na lista
-    if (localStorage.itensParaReceberValorStorage)
+    if (localStorage.getItem(itensParaReceberValorNome) != null)
     {
-        itensParaReceberValor = JSON.parse(localStorage.getItem("itensParaReceberValorStorage"));
+        itensParaReceberValor = JSON.parse(localStorage.getItem(itensParaReceberValorNome));
     }
+
+	//limpa dados antigos da tabela
+	while (tabelaParaReceberValor.rows.length > 0)
+	{ 
+		tabelaParaReceberValor.deleteRow(0); 
+	}
 
     for(let i=0; i<itensParaReceberValor.length;i++){
         //criar cada linha
@@ -481,10 +498,16 @@ window.montaTabelas = async () => {
 
 	let tabelaAguardandoEnvio = document.getElementById("tabela-aguardando-envio");
 
-    if (localStorage.itensAguardandoEnvioStorage)
+    if (localStorage.getItem(itensAguardandoEnvioNome) != null)
     {
-        itensAguardandoEnvio = JSON.parse(localStorage.getItem("itensAguardandoEnvioStorage"));
+        itensAguardandoEnvio = JSON.parse(localStorage.getItem(itensAguardandoEnvioNome));
     }
+
+	//limpa dados antigos da tabela
+	while (tabelaAguardandoEnvio.rows.length > 0)
+	{ 
+		tabelaAguardandoEnvio.deleteRow(0); 
+	}
 
     for(let i=0; i<itensAguardandoEnvio.length;i++){
 
@@ -505,12 +528,18 @@ window.montaTabelas = async () => {
 	let tabelaAguardandoChegada = document.getElementById("tabela-para-confirmar-recebimento");
 
     //adicionar produto na lista
-    if (localStorage.itensAguardandoChegadaStorage)
+    if (localStorage.getItem(itensAguardandoChegadaNome) != null)
     {
-        itensAguardandoChegada = JSON.parse(localStorage.getItem("itensAguardandoChegadaStorage"));
+        itensAguardandoChegada = JSON.parse(localStorage.getItem(itensAguardandoChegadaNome));
     }
 
-    for(let i=0; i<tabelaAguardandoChegada.length;i++){
+	//limpa dados antigos da tabela
+	while (tabelaAguardandoChegada.rows.length > 0)
+	{ 
+		tabelaAguardandoChegada.deleteRow(0); 
+	}
+
+    for(let i=0; i<itensAguardandoChegada.length;i++){
         //criar cada linha
         let tr = tabelaAguardandoChegada.insertRow();
 
@@ -520,10 +549,16 @@ window.montaTabelas = async () => {
         let td_preco = tr.insertCell();
 
         td_id.innerText = i+1;
-        td_nome.innerText = tabelaAguardandoChegada[i].nome;
-        td_vendedor.innerText = tabelaAguardandoChegada[i].vendedor;
-        td_preco.innerText = tabelaAguardandoChegada[i].preco;
+        td_nome.innerText = itensAguardandoChegada[i].nome;
+        td_vendedor.innerText = itensAguardandoChegada[i].vendedor;
+        td_preco.innerText = itensAguardandoChegada[i].preco;
     }
+}
+
+function recuperaItemId(id)
+{
+	itens =  JSON.parse(localStorage.getItem("listaItens"));
+	return itens[id];
 }
 
 window.exibeSaldo = () => {
@@ -538,49 +573,65 @@ window.exibeSaldo = () => {
 
 window.confirmaCompra = async () => {
 
-    SoliContract.on("notificaVenda", (vendedor, nome, preco,comprador,estado) => {
+    SoliContract.on("notificaVenda", (vendedor,comprador,idItem,estado) => {
 
-		//monta item
-		const item = {
-			nome: nome,
-			preco: parseInt(preco),
-			comprador:comprador,
-			vendedor: vendedor
-		}	
-
-		//vê se a compra é sua - não fiz com indexed pq gasta mais gas
-		if(usuarioLogado == vendedor && estado == true)
+		if(estado == true)
 		{
-			//alguem comprou um item seu
-			if(localStorage.itensParaEnviarStorage)
-			{
-				itensParaEnviar = JSON.parse(localStorage.getItem("itensParaEnviarStorage"));
+			//pegar item
+			const itemComprado = recuperaItemId(parseInt(idItem));
+
+			const venda = {
+				id: itemComprado.id,
+				nome: itemComprado.nome,
+				preco: itemComprado.preco,
+				vendedor: vendedor,
+				comprador: comprador				
 			}
 
-			itensParaEnviar.push(item);
-			localStorage.itensParaEnviarStorage = JSON.stringify(itensParaEnviar);	
-			
-			alert("Você recebeu um pedido");
-		}
-		else if(usuarioLogado == comprador)
-		{
-			if(estado == true)
+			//if - ao inves de if - else : ajuste para conseguir testar - limitação do localStorage
+			if(usuarioLogado == vendedor)
+			{
+				//alguem comprou um item seu
+				if(localStorage.getItem(itensParaEnviarNome) != null)
+				{
+					itensParaEnviar = JSON.parse(localStorage.getItem(itensParaEnviarNome));
+				}
+				else
+				{
+					itensParaEnviar = [];
+				}
+
+				itensParaEnviar.push(venda);
+				localStorage.setItem(itensParaEnviarNome,JSON.stringify(itensParaEnviar));
+				
+				alert("Você recebeu um pedido");
+
+			}
+			if(usuarioLogado == comprador)
 			{
 				//compra confirmada
-				alert("Sua compra foi confirmada. Agora é só esperar o envio pelo vendedor");
-
-				if(localStorage.itensAguardandoEnvioStorage)
+				if(localStorage.getItem(itensAguardandoEnvioNome) != null)
 				{
-					itensAguardandoEnvio = JSON.parse(localStorage.getItem("itensAguardandoEnvioStorage"));
-				}	
-				itensAguardandoEnvio.push(item);
-				localStorage.itensAguardandoEnvioStorage = JSON.stringify(itensAguardandoEnvio);	
+					itensAguardandoEnvio = JSON.parse(localStorage.getItem(itensAguardandoEnvioNome));
+				}
+				else
+				{
+					itensAguardandoEnvio = [];
+				}
+					
+				itensAguardandoEnvio.push(venda);
+				localStorage.setItem(itensAguardandoEnvioNome,JSON.stringify(itensAguardandoEnvio));	
+				alert("Sua compra foi confirmada. Agora é só esperar o envio pelo vendedor");
 			}
-			else
+		}
+		else
+		{
+			if(usuarioLogado == comprador)
 			{
 				alert("Seu saldo é insuficiente para essa compra :C Contribua mais com a rede para ganahr mais $oli");
 			}
 		}
+		montaTabelas();
     })
 }
 
@@ -591,48 +642,50 @@ window.compraEnviadaPeloVendedor = async () => {
 		if(usuarioLogado == vendedor)
 		{
 			//tirar dos itens para enviar e colocar nos itens para receber valor
-			if (localStorage.itensParaEnviarStorage)
+			if (localStorage.getItem(itensParaEnviarNome) != null)
 			{
-				itensParaEnviar = JSON.parse(localStorage.getItem("itensParaEnviarStorage"));
+				itensParaEnviar = JSON.parse(localStorage.getItem(itensParaEnviarNome));
 			}
-			if (localStorage.itensParaReceberValorStorage)
+			if (localStorage.getItem(itensParaReceberValorNome) != null)
 			{
-				itensParaReceberValor = JSON.parse(localStorage.getItem("itensParaReceberValorStorage"));
+				itensParaReceberValor = JSON.parse(localStorage.getItem(itensParaReceberValorNome));
 			}
+		
 			//remove item da lista 
 			const itemRemovido = itensParaEnviar.splice(itensParaEnviar.find((itemArray) => itemArray.nome === item), 1);
 
-			localStorage.itensParaEnviarStorage = JSON.stringify(itensParaEnviar);
+			localStorage.setItem(itensParaEnviarNome, JSON.stringify(itensParaEnviar));
 
 			//coloca ele na 2º lista
-			itensParaReceberValor.push(itemRemovido);
-			localStorage.itensParaReceberValorStorage = JSON.stringify(itensParaReceberValor);	
+			itensParaReceberValor.push(itemRemovido[0]);
+			localStorage.setItem(itensParaReceberValorNome, JSON.stringify(itensParaReceberValor));
 
 			alert("Pedido enviado com sucesso. Você ganhou 30 $oli pelo compromisso!");
 		}
-		else if(usuarioLogado == comprador)
+		if(usuarioLogado == comprador)
 		{
 			//tirar dos itens aguardando envio e colocar nos itens a confirmar recebimento
-			if (localStorage.itensAguardandoEnvioStorage)
+			if (localStorage.getItem(itensAguardandoEnvioNome) != null)
 			{
-				itensAguardandoEnvio = JSON.parse(localStorage.getItem("itensAguardandoEnvioStorage"));
+				itensAguardandoEnvio = JSON.parse(localStorage.getItem(itensAguardandoEnvioNome));
 			}
-			if (localStorage.itensAguardandoChegadaStorage)
+			if (localStorage.getItem(itensAguardandoChegadaNome) != null)
 			{
-				itensAguardandoChegada = JSON.parse(localStorage.getItem("itensAguardandoChegadaStorage"));
+				itensAguardandoChegada = JSON.parse(localStorage.getItem(itensAguardandoChegadaNome));
 			}
 
 			//remove item da 1 lista 
-			const itemRemovido = itensAguardandoEnvio.splice(itensAguardandoEnvio.find((itemArray) => itemArray.nome === item), 1);
+			const  itemRemovido =  itensAguardandoEnvio.splice(itensAguardandoEnvio.find((itemArray) => itemArray.nome === item), 1);
 
-			localStorage.itensAguardandoEnvioStorage = JSON.stringify(itensAguardandoEnvio);
+			localStorage.setItem(itensAguardandoEnvioNome,JSON.stringify(itensAguardandoEnvio));
 
 			//coloca ele na 2 lista
-			itensAguardandoChegada.push(itemRemovido);
-			localStorage.itensAguardandoChegadaStorage = JSON.stringify(itensAguardandoChegada);
+			itensAguardandoChegada.push(itemRemovido[0]);
+			localStorage.setItem(itensAguardandoChegadaNome, JSON.stringify(itensAguardandoChegada));
 			
 			alert("Seu pedido foi enviado pelo vendedor!");
 		}
+		montaTabelas();
 	})		
 }
 
@@ -643,37 +696,37 @@ window.compraRecebidaPeloComprador = async () => {
 		//tirar das listas itens para itensParaReceberValor e itensAguardandoChegada
 		if(usuarioLogado == vendedor)
 		{
-			//tirar dos itens para enviar e colocar nos itens para receber valor
-			if (localStorage.itensParaReceberValorStorage)
+			//tirar dos itens para receber valor
+			if (localStorage.getItem(itensParaReceberValorNome) != null)
 			{
-				itensParaReceberValor = JSON.parse(localStorage.getItem("itensParaReceberValorStorage"));
+				itensParaReceberValor = JSON.parse(localStorage.getItem(itensParaReceberValorNome));
 			}
 
 			//remove item da 1 lista 
 			itensParaReceberValor.splice(itensParaReceberValor.find((itemArray) => itemArray.nome === item), 1);
 
-			localStorage.itensParaReceberValorStorage = JSON.stringify(itensParaReceberValor);
+			localStorage.setItem(itensParaReceberValorNome,JSON.stringify(itensParaReceberValor));
 
 			alert("Você recebeu " + preco + " $oli, pelo produto " + item + ".Parabéns pela venda!" );
 
 		}
-		else if(usuarioLogado == comprador)
+		if(usuarioLogado == comprador)
 		{
 			//tirar dos itens aguardando chegada
-			if (localStorage.itensAguardandoChegadaStorage)
+			if (localStorage.getItem(itensAguardandoChegadaNome) != null)
 			{
-				itensAguardandoChegada = JSON.parse(localStorage.getItem("itensAguardandoChegadaStorage"));
+				itensAguardandoChegada = JSON.parse(localStorage.getItem(itensAguardandoChegadaNome));
 			}
 
 			//remove item da 1 lista 
 			itensAguardandoChegada.splice(itensAguardandoChegada.find((itemArray) => itemArray.nome === item), 1);
 
-			localStorage.itensAguardandoChegadaStorage = JSON.stringify(itensAguardandoChegada);
+			localStorage.setItem(itensAguardandoChegadaNome,JSON.stringify(itensAguardandoChegada));
 			
 			alert("Obrigada por confirmar a chegada do seu item. De presente você recebe 30 $oli")
 		}
+		montaTabelas();	
 	})
-		
 }
 
 //ouvir evento de compra recebida
@@ -684,31 +737,31 @@ window.compraCanceladaPeloComprador = async () => {
 		if(usuarioLogado == vendedor)
 		{
 			//esta na lista de itens a receber
-			if (localStorage.itensParaReceberValorStorage)
+			if (localStorage.getItem(itensParaReceberValorNome) != null)
 			{
-				itensParaReceberValor = JSON.parse(localStorage.getItem("itensParaReceberValorStorage"));
+				itensParaReceberValor = JSON.parse(localStorage.getItem(itensParaReceberValorNome));
 			}
 
 			itensParaReceberValor.splice(itensParaReceberValor.find((itemArray) => itemArray.nome === item),1);
-			localStorage.itensParaReceberValorStorage = JSON.stringify(itensParaReceberValor);
+			localStorage.setItem(itensParaReceberValorNome,JSON.stringify(itensParaReceberValor));
 
-			alert("O pedido: " + item + "foi cancelado pelo comprador" );
+			alert("O pedido: " + item + "foi cancelado pelo comprador. Sentimos muito :.C" );
 
 		}
-		else if(usuarioLogado == comprador)
+		if(usuarioLogado == comprador)
 		{
-			
 			//esta na lista de itens a receber
-			if (localStorage.itensAguardandoChegadaStorage)
+			if (localStorage.getItem(itensAguardandoChegadaNome) != null)
 			{
-				itensAguardandoChegada = JSON.parse(localStorage.getItem("itensAguardandoChegadaStorage"));
+				itensAguardandoChegada = JSON.parse(localStorage.getItem(itensAguardandoChegadaNome));
 			}
 
 			itensAguardandoChegada.splice(itensAguardandoChegada.find((itemArray) => itemArray.nome === item),1);
-			localStorage.itensAguardandoChegadaStorage = JSON.stringify(itensAguardandoChegada);			
+			localStorage.setItem(itensAguardandoChegadaNome,JSON.stringify(itensAguardandoChegada));			
 
 			alert("O pedido de cancelamento do " + item + "foi efetuado!" );
 		}
+		montaTabelas();
 	})
 		
 }
@@ -724,24 +777,46 @@ window.atualizaSaldo = async () => {
 	})
 }
 
+function verificaFaixaValores(array,id)
+{
+	if(id > 0 && id <= array.length)
+	{
+		return true;
+	}
+	alert("Número escolhido é inválido");
+	return false;
+}
+
+
 const botaoEnvio = document.querySelector("#enviar");
 
 const confirmarEnvio = () => {
 
 	//pegar o n digitado
-	const num = (document.querySelector("#enviar-esse-item")).value - 1;
+	const idRecebido = document.querySelector("#enviar-esse-item");
+	const id = idRecebido.value;
 
-	const itemEnviado = itensParaEnviar[num];
+	//pegar item respectivo
+	if(localStorage.getItem(itensParaEnviarNome) != null)
+	{
+		itensParaEnviar = JSON.parse(localStorage.getItem(itensParaEnviarNome));
+	}
 
+	//verificar faixa de valores
+	if(verificaFaixaValores(itensParaEnviar,id))
+	{
+		const itemEnviado = itensParaEnviar[id-1];
 
-    SoliContract.vendedorEnviaCompra(itemEnviado.comprador,itemEnviado.vendedor,itemEnviado.nome,itemEnviado.preco).then(() => {
-		
-		alert("Você enviou o " + itemEnviado.nome );
-	})
-	.catch((err) => {
-	// If error occurs, display error message
-		alert(err);
-	});        
+		SoliContract.vendedorEnviaCompra(itemEnviado.comprador,itemEnviado.vendedor,itemEnviado.nome,itemEnviado.preco).then(() => {
+			
+			alert("Você enviou o item: " + itemEnviado.nome );
+		})
+		.catch((err) => {
+		// If error occurs, display error message
+			alert(err);
+		});
+	}
+	idRecebido.value = "";
 } 
 
 botaoEnvio.addEventListener("click", confirmarEnvio);
@@ -751,18 +826,27 @@ const botaoConfirmaRecebimento = document.querySelector("#Recebi");
 const confirmarRecebimentoItem = () => {
 
 	//pegar o item
-	const num = (document.querySelector("#esse-item").value) - 1;
+	const numInput = document.querySelector("#esse-item");
+	const num = numInput.value;
 
-	const itemRecebido = itensAguardandoChegada[num];
+	//pegar item respectivo
+	if(localStorage.getItem(itensAguardandoChegadaNome) != null)
+	{
+		itensAguardandoChegada = JSON.parse(localStorage.getItem(itensAguardandoChegadaNome));
+	}
 
-    SoliContract.compradorRecebeCompra(itemRecebido.comprador,itemRecebido.vendedor,itemRecebido.nome,itemRecebido.preco).then(() => {
-		
-		alert("confirmou o recebimento do item: " + itemRecebido.nome );
-	})
-	.catch((err) => {
-	// If error occurs, display error message
-		alert(err);
-	});        
+	if(verificaFaixaValores(itensAguardandoChegada,num))
+	{
+		const itemRecebido = itensAguardandoChegada[num-1];
+
+		SoliContract.compradorRecebeCompra(itemRecebido.comprador,itemRecebido.vendedor,itemRecebido.nome,itemRecebido.preco).then(() => {
+			alert("confirmou o recebimento do item: " + itemRecebido.nome );
+		})
+		.catch((err) => {	
+			alert(err);
+		});    
+	}
+	numInput.value = "";    
 } 
 
 botaoConfirmaRecebimento.addEventListener("click", confirmarRecebimentoItem);
@@ -772,17 +856,30 @@ const botaoCancelaCompra = document.querySelector("#Cancelar");
 const cancelarCompra = () => {
 
 	//pegar o item
-	const nItem = document.querySelector("#esse-item").value - 1;
-	const itemCancelado = itensAguardandoChegada[nItem];
+	const numInput = document.querySelector("#esse-item");
+	const num = numInput.value;
 
-    SoliContract.compradorCancelaCompra(itemCancelado.comprador,itemCancelado.vendedor,itemCancelado.nome,itemCancelado.preco).then(() => {
-		
-		alert("Você cancelou o item: " + itemCancelado.nome );
-	})
-	.catch((err) => {
-	// If error occurs, display error message
-		alert(err);
-	});        
+	//pegar item respectivo
+	if(localStorage.getItem(itensAguardandoChegadaNome) != null)
+	{
+		itensAguardandoChegada = JSON.parse(localStorage.getItem(itensAguardandoChegadaNome));
+	}
+
+	if(verificaFaixaValores(itensAguardandoChegada,num))
+	{
+		//pegar o item
+		const itemCancelado = itensAguardandoChegada[num - 1];
+
+		SoliContract.compradorCancelaCompra(itemCancelado.comprador,itemCancelado.vendedor,itemCancelado.nome,itemCancelado.preco).then(() => {
+			
+			alert("Você cancelou o item: " + itemCancelado.nome );
+		})
+		.catch((err) => {
+		// If error occurs, display error message
+			alert(err);
+		});  
+	}
+	numInput.value = "";
 } 
 
 botaoCancelaCompra.addEventListener("click", cancelarCompra);
