@@ -1,4 +1,9 @@
-Informações importantes sobre esse projeto
+##dApp Solidaria
+
+Aplicação de um desapego descentralizado e seguro que usa smart contracts e blockchain.
+
+
+#Informações importantes sobre esse projeto
 
 O projeto consiste em uma dApp que implementa uma rede de colaboração mútua. Essa rede de colaboração usa blockchain para promover confiabilidade do sistema. Assim, há no app as modalidades de compra, venda, aluguel e doação de itens, imóveis e etc. A ideia é de que toda essas transações sejam feitas com recursos(moedas) da própria plataforma e que seus usuários se comportem da melhor maneira, atráves de um sistema de recompensas e histórico fiel, já que as transações feitas por um usuário estarão cunhadas "em pedra" por um sistema de contrato inteligente que usa Blockchain.
 
