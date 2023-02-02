@@ -12,23 +12,65 @@
     font-size: 25px;
     color: #ffffff ;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 0 0 0 60%;
 }
 
-.perfil button{
+
+.perfilBody h1{
+    font-size: 25px;
+    color: #d8aa03 ;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 20px auto 25px 10px;
+}
+
+.perfilBody h3{
+    font-size: 20px;
+    color: #6e5602 ;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 10px auto 10px 30px;
+}
+
+.perfilBody table {
+    margin: 10px auto 10px 30px;
+    font-size: 20px;
+    color: #303030 ;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    border-color:#37352e70 ;
+}
+  
+.perfilBody label{
+    margin: 24px 24px 24px;
+    font-size: 20px;
+    color: #d9aa01 ;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+}
+    
+.perfilBody input{
+    background-color: #f6ea7dbf;
+    border-radius: 20px;
+    border: none;
+    height: 40px;
+    color: #765c00;   
+    align-items: center;
+    width: 100px;
+}
+
+.perfilBody button{
 
     height: 40px;
     font-weight: 500;
     background: #ecbc0f ;
     color:#ffffff;
     border-radius: 25px;
-    border-color: #ffffff;
+    border: none;
     cursor: pointer;
     transition: filter 0.7s;
     font-size: 20px;
-    align-items: flex-end;
-    margin: 0 0 0 45%;
+    margin: 1%;
+
 }
     
-.perfil button:hover{
+.perfilBody button:hover{
     filter: brightness(0.9);
 }

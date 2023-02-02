@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <!-- Importing css styles -->
     <link rel="stylesheet" href="./perfil.css" />
-    <title>Perfil</title>
+    <title>Meu perfil</title>
   </head>
   <body>
     
@@ -20,14 +20,84 @@
               <img src="../../Imagens/moeda.png" alt="Logo" width="35" height="35" class="d-inline-block align-text-top">
               <strong> Conexão Solidária</strong>
             </a>
-            <button id="VerSaldo">Atualiza saldo</button>
-            <h2 id="ExibeSaldo"> </h2>
+            <h2 id="ExibeSaldo"></h2>
             <a class="navbar-brand" href="../Perfil/perfil.html">
               <img src="../../Imagens/perfil.webp" alt="Logo" width="35" height="35" class="d-inline-block align-text-top">
             </a>
           </div>
         </nav>
-    </header>
+      </header>
+
+    <body class="perfilBody">
+      <h1><strong>Visão do vendedor:</strong></h1>
+      <h3><strong>Itens para enviar:</strong></h3>
+      <table class="table table-hover table-bordered table-striped ">
+        <thead>
+          <th>Id</th>
+          <th>Nome</th>
+          <th>Comprador</th>
+          <th>Preço($oli)</th>
+        </thead>
+        <tbody id="tabela-para-enviar">
+        </tbody>
+      </table>
+
+      <div class = "envio" >
+        <label><strong>Confirmar envio do item:</strong> </label>
+        <input type="text" id="enviar-esse-item"/>
+        <button id="enviar">Comfirmar envio</button>
+      </div>
+
+      <br/>
+
+      <h3><strong>Aguardando a confirmação de recebimento pelo comprador:</strong></h3>
+      <table class="table table-hover table-bordered table-striped ">
+        <thead>
+          <th>Id</th>
+          <th>Nome</th>
+          <th>Comprador</th>
+          <th>Preço($oli)</th>
+        </thead>
+        <tbody id="tabela-receber-valor">
+        </tbody>
+      </table>
+
+      <br/>
+      <h1><strong>Visão do comprador:</strong></h1>
+
+      <h3><strong>Aguardando envio pelo vendedor:</strong></h3>
+      <table class="table table-hover table-bordered table-striped ">
+        <thead>
+          <th>Id</th>
+          <th>Nome</th>
+          <th>Vendedor</th>
+          <th>Preço($oli)</th>
+        </thead>
+        <tbody id="tabela-aguardando-envio">
+        </tbody>
+      </table>
+
+      <br/>
+
+      <h3><strong>Itens para confirmar entrega:</strong></h3>
+      <table class="table table-hover table-bordered table-striped ">
+        <thead>
+          <th>Id</th>
+          <th>Nome</th>
+          <th>Vendedor</th>
+          <th>Preço($oli)</th>
+        </thead>
+        <tbody id="tabela-para-confirmar-recebimento">
+        </tbody>
+      </table>
+    </body>
+
+    <div class = "recebimento" >
+      <label><strong>Digite o numero do item:</strong> </label>
+      <input type="text" id="esse-item"/>
+      <button id="Recebi">Item recebido</button>
+      <button style="background-color: rgb(240, 19, 19)" id="Cancelar">Cancelar pedido</button> 
+    </div>
 
     </div>
    
