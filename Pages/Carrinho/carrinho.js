@@ -2,7 +2,7 @@
 let SoliContract;
 
 // endereço do contrato e ABI para instanciar o contrato nas páginas
-const Soli_Contract_Address = "0x94dbCcE55B192Fb4c81926Ee9a65dF8Fa4Eb4041";
+const Soli_Contract_Address = "0x45b801c1F32661A6218A9e7bFF9A44779f1800B6";
 const Soli_Contract_ABI = [
 	{
 		"inputs": [],
